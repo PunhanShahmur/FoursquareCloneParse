@@ -27,7 +27,29 @@ class AddPlaceVC: UIViewController,UIImagePickerControllerDelegate, UINavigation
     
     @IBAction func nextStep(_ sender: UIButton) {
         
-        performSegue(withIdentifier: "toMapVC", sender: nil)
+        if nameLabel.text != "" && typeLabel.text != "" && atmosphereLabel.text != "" {
+            
+            if let image = imageView.image {
+                
+                let placeModel = PlaceModel.shared
+                placeModel.placeName = nameLabel.text ?? ""
+                placeModel.placeType = typeLabel.text ?? ""
+                placeModel.placeAtmosphere = atmosphereLabel.text ?? ""
+                placeModel.placeImage = image
+                
+                performSegue(withIdentifier: "toMapVC", sender: nil)
+            }
+            
+            
+        } else {
+            
+            let alertController = UIAlertController(title: "Error", message: "Please fill all fields", preferredStyle: .alert)
+            let alertAction = UIAlertAction(title: "OK", style: .default)
+            alertController.addAction(alertAction)
+            present(alertController, animated: true)
+            
+        }
+        
         
     }
     
