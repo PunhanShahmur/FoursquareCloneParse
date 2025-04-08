@@ -77,7 +77,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="V4P-O8-pwd">
-                                <rect key="frame" x="0.0" y="44" width="393" height="808"/>
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
                         </subviews>
@@ -265,6 +265,7 @@
                     <navigationItem key="navigationItem" id="Ore-NP-gd0"/>
                     <connections>
                         <outlet property="mapView" destination="imS-oN-Nrx" id="gf5-6g-goX"/>
+                        <segue destination="jjY-5f-aLr" kind="presentation" identifier="toTableView" modalPresentationStyle="fullScreen" id="WDN-gr-zZi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="She-hj-pXL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -308,6 +309,9 @@
             <point key="canvasLocation" x="3730.5343511450378" y="-2.1126760563380285"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="WDN-gr-zZi"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="upload" width="1200" height="1200"/>
         <systemColor name="systemBackgroundColor">
