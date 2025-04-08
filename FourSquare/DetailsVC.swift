@@ -9,7 +9,7 @@ import UIKit
 import MapKit
 import ParseCore
 
-class DetailsVC: UIViewController {
+class DetailsVC: UIViewController, MKMapViewDelegate {
 
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var detailsNameLabel: UILabel!
@@ -28,6 +28,7 @@ class DetailsVC: UIViewController {
 
         
         getData()
+        detailsMapLabel.delegate = self
         
          
     }
@@ -55,7 +56,7 @@ class DetailsVC: UIViewController {
                         self.detailsNameLabel.text = placeName
                     }
                     
-                    if let placeType = myObject["category"] as? String {
+                    if let placeType = myObject["type"] as? String {
                         self.detailsTypeLabel.text = placeType
                     }
                     
@@ -83,12 +84,95 @@ class DetailsVC: UIViewController {
                         }
                     }
                     
+                    self.createMapView()
+                    
                 }
                 
             }
             
         }
         
+    }
+    
+    func createMapView() {
+        
+        let location = CLLocationCoordinate2D(latitude: chosenLatitude, longitude: chosenLongitude)
+        
+        let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+        
+        let region = MKCoordinateRegion(center: location, span: span)
+        
+        detailsMapLabel.setRegion(region, animated: true)
+        
+        let annotation = MKPointAnnotation()
+        
+        annotation.coordinate = location
+        
+        detailsMapLabel.addAnnotation(annotation)
+        
+        annotation.title = detailsNameLabel.text
+        annotation.subtitle = detailsTypeLabel.text
+        
+    }
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        if annotation is MKUserLocation {
+            return nil
+        }
+        
+        let reuseId = "pin"
+        
+        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId)
+        
+        if pinView == nil {
+            
+            pinView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+            
+            pinView?.canShowCallout = true
+            
+            let button = UIButton(type: .detailDisclosure)
+            pinView?.rightCalloutAccessoryView = button
+            
+        } else {
+            
+            pinView?.annotation = annotation
+            
+        }
+        
+        return pinView
+        
+        
+    }
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        
+        if self.chosenLongitude != 0.0 && self.chosenLatitude != 0.0 {
+            
+            let requestLocation = CLLocation(latitude: self.chosenLatitude, longitude: self.chosenLongitude)
+            
+            CLGeocoder().reverseGeocodeLocation(requestLocation) { (placemarks, error) in
+                
+                if let placemark = placemarks {
+                    if placemark.count > 0  {
+                        
+                        let mkPlacemark = MKPlacemark(placemark: placemark[0])
+                        
+                        let mapItem = MKMapItem(placemark: mkPlacemark)
+                        
+                        mapItem.name = self.detailsNameLabel.text
+                        
+                        let launchOptions: [String: Any] = [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving]
+                        
+                        mapItem.openInMaps(launchOptions: launchOptions)
+                         
+                        
+                    }
+                }
+                
+            }
+            
+        }
     }
      
 
