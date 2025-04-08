@@ -99,11 +99,6 @@ class PlacesController: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     
-    
-    
-    
-    
-    
     @objc func addPlace() {
         performSegue(withIdentifier: "toAddPlaceVC", sender: nil)
     }

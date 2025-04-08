@@ -27,6 +27,8 @@ class DetailsVC: UIViewController, MKMapViewDelegate {
         super.viewDidLoad()
 
         
+        
+        
         getData()
         detailsMapLabel.delegate = self
         
