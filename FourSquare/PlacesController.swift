@@ -15,6 +15,8 @@ class PlacesController: UIViewController, UITableViewDelegate, UITableViewDataSo
     var nameArray: [String] = []
     var idArray: [String] = []
     
+    var selectedPlaceId: String = ""
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,18 +81,22 @@ class PlacesController: UIViewController, UITableViewDelegate, UITableViewDataSo
         
     }
     
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        
-//        
-//        
-//    }
-//    
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        
-//        
-//        
-//        
-//    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        selectedPlaceId = idArray[indexPath.row]
+        self.performSegue(withIdentifier: "toDetailsVC", sender: nil)
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "toDetailsVC" {
+            let destinationVC = segue.destination as! DetailsVC
+            destinationVC.chosenId = selectedPlaceId
+        }
+        
+        
+    }
     
     
     
